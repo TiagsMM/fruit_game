@@ -144,6 +144,12 @@ player["Strength"] = starting_stats[character]["Strength"] * 2
 
 print_stats(player)
 
+mushroom= {
+    "Nome": "Mushroom",
+    "Hp": 6,
+    "Strength": 5
+}
+
 historia= {
     1: ["h", "You and G.Apple leave the hospital and end up on a crop, where u must find the GREAT EVIL PINEAPPLE and bring him down!! "],
     2: ["h", "G.Apple: This is where i will leave you... You must get vengeance for all of us!"],
@@ -154,22 +160,22 @@ historia= {
             ["Fight", 6]
         ],
     6: ["l", 
-            [player, 9],
-            [Melon, 11]
+            [player, 10],
+            [mushroom, 9]
     ],
     7: ["h", "you turned left and you wind up on a dark little house looking for refugee, inside there is a Chest! It seems weird though..."],
     8: ["d", "Open it or Leave the house?",
             ["Open", 13],
             ["Leave", 12]
     ],
-    9: ["h", nome + ": Finally i won my first battle!!" ],
-    10: ["u", 0, 2],
-    11: ["h", "You died... Try Again", 2], 
+    9: ["h", "You died... Try Again", 2], 
+    10: ["h", nome + ": Finally i won my first battle!!" ],
+    11: ["u", 0, 2],
     12: ["f"],
-    13: ["h", "u died"],
-    13: ["h", "welcome to 1"],
-    14: ["h", "welcome to 44"],
-    15: ["f"]
+    13: ["h", "BZZZzzzZZZZZ..... A bunch of bees jump out and start to sting you repeatedly!!\nJust when you start to panic the bees scram and you start feeling a lot better than before\nThey were medicinal bees !! You win 3 Health Points"],
+    14: ["u", 3, 0],
+    15: ["h", "welcome to 44"],
+    16: ["f"]
 }
 
 l_actual = 1
@@ -183,10 +189,10 @@ while p_actual[0] != "f" :
             l_actual = l_actual + 1
     elif(p_actual[0]) == "d":
         typewriter(p_actual[1])
-        character=input()
-        if(character == p_actual[2][0]):
+        answer=input()
+        if(answer == p_actual[2][0]):
             l_actual = p_actual[2][1]
-        elif (character == p_actual[3][0]):
+        elif (answer == p_actual[3][0]):
             l_actual = p_actual[3][1]
         else:
             typewriter("Invalid answer. Try again")
@@ -202,8 +208,9 @@ while p_actual[0] != "f" :
         time.sleep(p_actual[1]) 
         l_actual = l_actual + 1  
     elif(p_actual[0] == "u" ):
-        player["Hp"]= starting_stats[character]["Hp"] + p_actual[1]
-        player["Strength"] = starting_stats[character]["Strength"] + p_actual[2]
+        player["Hp"]= player["Hp"] + p_actual[1]
+        player["Strength"] = player["Strength"] + p_actual[2]
+        print_stats(player)
         l_actual = l_actual + 1  
 
     p_actual = historia[l_actual]
