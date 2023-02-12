@@ -1,24 +1,51 @@
 import time, random, sys, os
 
+starting_stats = {
+    "Grape": {
+        "Hp": 5,
+        "Strength": 5
+    },
+    "Cherry": {
+        "Hp": 6,
+        "Strength": 4
+    },
+    "Blueberry": {
+        "Hp": 4,
+        "Strength": 6
+    }
+}
+
+player = {
+    "Nome": "",
+    "Hp": 0,
+    "Strength": 0
+}
+
 def typewriter(string):
     for char in string:
         sys.stdout.write(char)
         sys.stdout.flush()
         if char != "\n":
-            time.sleep(0.05)
+            time.sleep(0.0)
         else:            
-            time.sleep(1)
+            time.sleep(0)
     print("")        
     return None 
 
 os.system("clear") 
 
-def print_stats(Who, Health, Forca):
-    typewriter(Who + " stats:" + "\nᐶ Hp ❤ :" +  str(Health)  +  "\nᐶ Strength 🗡 :" + str(Forca) + "\n" )
+def print_stats(Jogador):
+    typewriter(Jogador["Nome"] + " stats:" + "\nᐶ Hp ❤ :" +  str(Jogador["Hp"])  +  "\nᐶ Strength 🗡 :" + str(Jogador["Strength"]) + "\n" )
     return None
 
-def fight(NomeA, HpA, StrengthA, NomeB,HpB, StrengthB):
-    print_stats(NomeB, HpB , StrengthB )
+def fight(statsA, statsB):
+    NomeA = statsA["Nome"]
+    HpA = statsA["Hp"]
+    StrengthA = statsA ["Strength"]
+    NomeB = statsB["Nome"]
+    HpB = statsB["Hp"]
+    StrengthB = statsB ["Strength"]
+    print_stats(statsB)
     print(NomeA + " attacks " + NomeB)
     AatacaB = True
 
@@ -45,25 +72,20 @@ def hit(NomeX, StrengthX, NomeY, HpY):
 
 typewriter('World: Welcome to Fruit World')
 typewriter('World: What is your name?') 
-nome=input()
-typewriter("World: Hello " + nome + ', You must choose your character')
+player["Nome"]=input()
+nome = player["Nome"]
+typewriter("World: Hello " + player["Nome"] + ', You must choose your character')
 typewriter('ᐶ Grape 🍇 ')
 typewriter("ᐶ Cherry 🍒 ")
 typewriter("ᐶ Blueberry 🫐 ")
 character=input()
-if character== "Grape":
-    Hp=5
-    Strength=5
-elif character== "Cherry":
-    Hp=6
-    Strength=4
-elif character== "Blueberry":
-    Hp=4
-    Strength=6
+if character == "Grape" or character == "Cherry" or  character == "Blueberry":
+    player["Hp"]=starting_stats[character]["Hp"]
+    player["Strength"]=starting_stats[character]["Strength"]
 else:
     print("Invalid Character")
     exit()
-print_stats("Your",  Hp, Strength)
+print_stats(player)
 typewriter('U wake up in your bowl with the sound of an enormous melon next to you')
 typewriter("....")
 typewriter("Irritated by your lack of sleep you can't help but stare at the melon")
@@ -79,12 +101,16 @@ print('What do you do?:' )
 print("ᐶ Fight Back")
 print("ᐶ Run Away")
 action=input()
-MelonHp= 15
-MelonStrength= 20
+
+Melon= {
+    "Nome": "Melon", 
+    "Hp": 15,
+    "Strength": 20   
+}
 if action== "Run Away":
     typewriter("You try to escape...\nBut the melon quickly catches up to you and you are locked in a deadly fight!")
 
-Hp = fight(nome, Hp, Strength, "Melon", MelonHp, MelonStrength)
+player["Hp"] = fight(player, Melon)
 
 typewriter(".")
 typewriter(".")
@@ -106,4 +132,18 @@ typewriter(nome + ":Well i was from a tree far far away from here but someone to
 typewriter("G. Apple: Don't worry,  we will build you up so stuff like that doesn't happen anymore")
 typewriter("G. Apple: But first, you should rest some more...")
 typewriter("A couple days later...")
-typewriter("")
+typewriter("After staying a couple days on the hospital and practicing in the gym with G. Apple your stats have raised up!")
+
+if player["Hp"] < 0:
+    player["Hp"]= starting_stats[character]["Hp"]
+
+
+# if character == "Grape":
+    
+# elif character == "Cherry":
+   
+# elif character == "Blueberry":
+   
+# else:
+#     print("invalid character")
+print_stats(player)
