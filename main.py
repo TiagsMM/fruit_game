@@ -26,7 +26,7 @@ def typewriter(string):
         sys.stdout.write(char)
         sys.stdout.flush()
         if char != "\n":
-            time.sleep(0.5)
+            time.sleep(0.05)
         else:            
             time.sleep(1)
     print("")        
@@ -63,7 +63,7 @@ def hit(NomeX, StrengthX, NomeY, HpY):
     HpY = HpY - attack 
     typewriter(NomeX + " hit for " + str(attack))
     if attack == 0 : 
-        typewriter(NomeX + " missed completely...x")
+        typewriter(NomeX + " missed completely...")
     elif attack > HpY : 
         typewriter(NomeY + " Fainted") 
     else: 
@@ -112,12 +112,6 @@ if action== "Run Away":
 
 player["Hp"] = fight(player, Melon)
 
-
-
-
-
-
-
 typewriter(".")
 typewriter(".")
 typewriter(".")
@@ -140,6 +134,7 @@ typewriter("G. Apple: But first, you should rest some more...")
 typewriter("A couple days later...")
 typewriter("After staying a couple days on the hospital and practicing in the gym with G. Apple your stats have raised up!")
 
+
 if player["Hp"] < 0:
     player["Hp"]= starting_stats[character]["Hp"]
 
@@ -148,3 +143,68 @@ player["Strength"] = starting_stats[character]["Strength"] * 2
 
 
 print_stats(player)
+
+historia= {
+    1: ["h", "You and G.Apple leave the hospital and end up on a crop, where u must find the GREAT EVIL PINEAPPLE and bring him down!! "],
+    2: ["h", "G.Apple: This is where i will leave you... You must get vengeance for all of us!"],
+    3: ["h", "When you enter the crop you pass through various plants and beautiful species..."],
+    4: ["h", "Suddenly, a mushroom appears!"],
+    5: ["d", "Choose to Fight or quickly Turn left?",
+            ["Turn Left", 7],
+            ["Fight", 6]
+        ],
+    6: ["l", 
+            [player, 9],
+            [Melon, 11]
+    ],
+    7: ["h", "you turned left and you wind up on a dark little house looking for refugee, inside there is a Chest! It seems weird though..."],
+    8: ["d", "Open it or Leave the house?",
+            ["Open", 13],
+            ["Leave", 12]
+    ],
+    9: ["h", nome + ": Finally i won my first battle!!" ],
+    10: ["u", 0, 2],
+    11: ["h", "You died... Try Again", 2], 
+    12: ["f"],
+    13: ["h", "u died"],
+    13: ["h", "welcome to 1"],
+    14: ["h", "welcome to 44"],
+    15: ["f"]
+}
+
+l_actual = 1
+p_actual = historia[l_actual]
+while p_actual[0] != "f" :
+    if(p_actual[0]) == "h":
+        typewriter(p_actual[1])
+        if (len(p_actual) > 2):
+            l_actual = p_actual[2]
+        else:
+            l_actual = l_actual + 1
+    elif(p_actual[0]) == "d":
+        typewriter(p_actual[1])
+        character=input()
+        if(character == p_actual[2][0]):
+            l_actual = p_actual[2][1]
+        elif (character == p_actual[3][0]):
+            l_actual = p_actual[3][1]
+        else:
+            typewriter("Invalid answer. Try again")
+    elif(p_actual[0]) == "l":
+        pA = p_actual[1][0]
+        pB = p_actual[2][0]
+        pA["Hp"] = fight(pA, pB)
+        if(pA["Hp"] > 0 ):
+            l_actual = p_actual[1][1]
+        else:
+            l_actual = p_actual[2][1]
+    elif(p_actual[0] == "t" ):
+        time.sleep(p_actual[1]) 
+        l_actual = l_actual + 1  
+    elif(p_actual[0] == "u" ):
+        player["Hp"]= starting_stats[character]["Hp"] + p_actual[1]
+        player["Strength"] = starting_stats[character]["Strength"] + p_actual[2]
+        l_actual = l_actual + 1  
+
+    p_actual = historia[l_actual]
+
