@@ -26,9 +26,9 @@ def typewriter(string):
         sys.stdout.write(char)
         sys.stdout.flush()
         if char != "\n":
-            time.sleep(0.0)
+            time.sleep(0.5)
         else:            
-            time.sleep(0)
+            time.sleep(1)
     print("")        
     return None 
 
@@ -70,8 +70,8 @@ def hit(NomeX, StrengthX, NomeY, HpY):
         typewriter(NomeY + " stayed with " + str(HpY) + " Hp")
     return HpY
 
-typewriter('World: Welcome to Fruit World')
-typewriter('World: What is your name?') 
+typewriter('Welcome to Fruit World')
+typewriter('What is your name?') 
 player["Nome"]=input()
 nome = player["Nome"]
 typewriter("World: Hello " + player["Nome"] + ', You must choose your character')
@@ -112,6 +112,12 @@ if action== "Run Away":
 
 player["Hp"] = fight(player, Melon)
 
+
+
+
+
+
+
 typewriter(".")
 typewriter(".")
 typewriter(".")
@@ -137,13 +143,8 @@ typewriter("After staying a couple days on the hospital and practicing in the gy
 if player["Hp"] < 0:
     player["Hp"]= starting_stats[character]["Hp"]
 
+player["Hp"]= starting_stats[character]["Hp"] * 2
+player["Strength"] = starting_stats[character]["Strength"] * 2
 
-# if character == "Grape":
-    
-# elif character == "Cherry":
-   
-# elif character == "Blueberry":
-   
-# else:
-#     print("invalid character")
+
 print_stats(player)
