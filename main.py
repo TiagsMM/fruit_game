@@ -64,7 +64,7 @@ def hit(NomeX, StrengthX, NomeY, HpY):
     typewriter(NomeX + " hit for " + str(attack))
     if attack == 0 : 
         typewriter(NomeX + " missed completely...")
-    elif attack > HpY : 
+    elif HpY < 0 : 
         typewriter(NomeY + " Fainted") 
     else: 
         typewriter(NomeY + " stayed with " + str(HpY) + " Hp")
@@ -150,64 +150,60 @@ mushroom= {
     "Strength": 5
 }
 
-historia= {
-    1: ["h", "You and G.Apple leave the hospital and end up on a crop, where u must find the GREAT EVIL PINEAPPLE and bring him down!! "],
-    2: ["h", "G.Apple: This is where i will leave you... You must get vengeance for all of us!"],
-    3: ["h", "When you enter the crop you pass through various plants and beautiful species..."],
-    4: ["h", "Suddenly, a mushroom appears!"],
-    5: ["d", "Choose to Fight or quickly Turn left?",
-            ["Turn Left", 7],
-            ["Fight", 6]
-        ],
-    6: ["l", 
-            [player, 10],
-            [mushroom, 9]
-    ],
-    7: ["h", "you turned left and you wind up on a dark little house looking for refugee, inside there is a Chest! It seems weird though..."],
-    8: ["d", "Open it or Leave the house?",
-            ["Open", 13],
-            ["Leave", 12]
-    ],
-    9: ["h", "You died... Try Again", 2], 
-    10: ["h", nome + ": Finally i won my first battle!!" ],
-    11: ["u", 0, 2],
-    12: ["f"],
-    13: ["h", "BZZZzzzZZZZZ..... A bunch of bees jump out and start to sting you repeatedly!!\nJust when you start to panic the bees scram and you start feeling a lot better than before\nThey were medicinal bees !! You win 3 Health Points"],
-    14: ["u", 3, 0],
-    15: ["h", "welcome to 44"],
-    16: ["f"]
-}
+# hist = "hist", texto, opcao(salto relativo) 
+# optn = "optn", texto, (decisao 1, salto relativo), (decisao 2, salto relativo)
+# luta = "luta", (player, salto relativo v), (adversario, salto relativo d)
+# lvup = "lvup", aumento Hp, aumento Str
+
+historia= [
+    ["hist", "You and G.Apple leave the hospital and end up on a crop, where u must find the GREAT EVIL PINEAPPLE and bring him down!! "],
+    ["hist", "G.Apple: This is where i will leave you... You must get vengeance for all of us!"],
+    ["hist", "When you enter the crop you pass through various plants and beautiful species..."],
+    ["hist", "Suddenly, a mushroom appears!"],
+    ["optn", "Choose to Fight or quickly Turn left?",["Turn Left", 2],["Fight", 1]],
+    ["luta", [player, 4],[mushroom, 3]],
+    ["hist", "you turned left and you wind up on a dark little house looking for refugee, inside there is a Chest! It seems weird though..."],
+    ["optn", "Open it or Leave the house?",["Open", 5],["Leave", 4]],
+    ["hist", "You died... Try Again", -7], 
+    ["hist", nome + ": Finally i won my first battle!!" ],
+    ["lvup", 0, 2],
+    ["fim"],
+    ["hist", "BZZZzzzZZZZZ..... A bunch of bees jump out and start to sting you repeatedly!!\nJust when you start to panic the bees scram and you start feeling a lot better than before\nThey were medicinal bees !! You win 3 Health Points"],
+    ["lvup", 3, 0],
+    ["hist", "welcome to 44"],
+    ["fim"]
+]
 
 l_actual = 1
 p_actual = historia[l_actual]
-while p_actual[0] != "f" :
-    if(p_actual[0]) == "h":
+while p_actual[0] != "fim" :
+    if(p_actual[0]) == "hist":
         typewriter(p_actual[1])
         if (len(p_actual) > 2):
-            l_actual = p_actual[2]
+            l_actual = l_actual + p_actual[2]
         else:
             l_actual = l_actual + 1
-    elif(p_actual[0]) == "d":
+    elif(p_actual[0]) == "optn":
         typewriter(p_actual[1])
         answer=input()
         if(answer == p_actual[2][0]):
-            l_actual = p_actual[2][1]
+            l_actual = l_actual + p_actual[2][1]
         elif (answer == p_actual[3][0]):
-            l_actual = p_actual[3][1]
+            l_actual = l_actual + p_actual[3][1]
         else:
             typewriter("Invalid answer. Try again")
-    elif(p_actual[0]) == "l":
+    elif(p_actual[0]) == "luta":
         pA = p_actual[1][0]
         pB = p_actual[2][0]
         pA["Hp"] = fight(pA, pB)
         if(pA["Hp"] > 0 ):
-            l_actual = p_actual[1][1]
+            l_actual = l_actual + p_actual[1][1]
         else:
-            l_actual = p_actual[2][1]
+            l_actual = l_actual + p_actual[2][1]
     elif(p_actual[0] == "t" ):
         time.sleep(p_actual[1]) 
         l_actual = l_actual + 1  
-    elif(p_actual[0] == "u" ):
+    elif(p_actual[0] == "lvup" ):
         player["Hp"]= player["Hp"] + p_actual[1]
         player["Strength"] = player["Strength"] + p_actual[2]
         print_stats(player)
