@@ -119,7 +119,6 @@ historia= [
     ["hist", "You try to escape...\nBut the melon quickly catches up to you and you are locked in a deadly fight!"],
     ["luta", [player, 1],[Melon, 2]],
     ["hist", "Incrivelmente ganhaste!\nCom o cansaço da luta adormeces no sítio...", 2],
-    ["lvup", (starting_stats[character]["Hp"]) - player["Hp"], (starting_stats[character]["Strength"]) - player["Strength"]],
     ["hist", "."],
     ["hist", "."],
     ["hist", "."],
@@ -187,6 +186,8 @@ while p_actual[0] != "fim" :
             l_actual = l_actual + p_actual[1][1]
         else:
             l_actual = l_actual + p_actual[2][1]
+        if player["Hp"] <= 0:
+            player["Hp"]= starting_stats[character]["Hp"]
     elif(p_actual[0] == "t" ):
         time.sleep(p_actual[1]) 
         l_actual = l_actual + 1  
