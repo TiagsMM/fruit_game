@@ -53,14 +53,14 @@ OdonilRoses = {
     "Strength": 0
 }
 
-backpack=[]
+backpack={}
 
 def addtoBackpack(item):
-    backpack.append(item)
+    backpack[item["Nome"]] = item
 
 def printBackpack():
     for b in backpack:
-        print(b)
+        print("ᐶ" + b)
     print_stats(player)
     if backpack == [0]:
         typewriter("Your Backpack is empty...Go get some items")
@@ -217,7 +217,6 @@ historia= [
     ["fim"],
 ]
 
-
 l_actual = 0
 p_actual = historia[l_actual]
 while p_actual[0] != "fim" :
@@ -237,7 +236,8 @@ while p_actual[0] != "fim" :
         elif answer == "b":
             printBackpack()
         elif answer == "Use Item":
-            # fix use_item
+            item=input()
+            useItem(backpack[item])
             print_stats(player)
         else:
             typewriter("Invalid answer. Try again")
