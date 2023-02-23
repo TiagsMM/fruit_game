@@ -15,23 +15,59 @@ starting_stats = {
     }
 }
 
+# characters
 player = {
     "Nome": "",
     "Hp": 0,
     "Strength": 0
 }
 
-mushroom= {
+mushroom = {
     "Nome": "Mushroom",
     "Hp": 6,
     "Strength": 5
 }
 
-Melon= {
+Melon = {
     "Nome": "Melon", 
     "Hp": 15,
     "Strength": 20   
 }
+
+AppleGang = {
+    "Nome": "AppleGang",
+    "Hp": 12 , 
+    "Strength": 2
+}
+
+DragonFruit = {
+    "Nome": "DragonFruit",
+    "Hp": 7 ,
+    "Strength": 8 
+}
+
+# items
+OdonilRoses = {
+    "Nome": "OdonilRoses",
+    "Hp": 3 , 
+    "Strength": 0
+}
+
+backpack=[]
+
+def addtoBackpack(item):
+    backpack.append(item)
+
+def printBackpack():
+    for b in backpack:
+        print(b)
+    print_stats(player)
+    if backpack == [0]:
+        typewriter("Your Backpack is empty...Go get some items")
+
+def useItem(item): 
+    player["Hp"] = player["Hp"] + item["Hp"]
+    player["Strength"] = player["Strength"] + item["Strength"]
 
 def typewriter(string):
     for char in string:
@@ -112,6 +148,7 @@ historia= [
     ["hist", "The melon looks back at you"],
     ["hist", "...."],
     ["hist", "After 10 seconds of intense staring the melon snaps"],
+    ["t", 5],
     ["hist", "Melon: WHAT ARE YOU LOOKING AT!?"],
     ["hist", "Still in shock your body is frozen and you can't help but look at him"],
     ["hist", "The melon starts to approach you with a figthing stance"],
@@ -145,20 +182,41 @@ historia= [
     ["hist", "G.Apple: This is where i will leave you... You must get vengeance for all of us!"],
     ["hist", "When you enter the crop you pass through various plants and beautiful species..."],
     ["hist", "Suddenly, a mushroom appears!"],
-    ["optn", "Choose to Fight it or quickly turn left\nᐶ Fight\nᐶ Turn left",["Turn Left", 2],["Fight", 1]],
+    ["optn", "Choose to Fight it or quickly turn left\nᐶ Fight\nᐶ Turn Left",["Turn Left", 2],["Fight", 1]],
     ["luta", [player, 4],[mushroom, 3]],
-    ["hist", "you turned left and you wind up on a dark little house looking for refugee, inside there is a Chest! It seems weird though..."],
-    ["optn", "Open it or Leave the house?\nᐶ Open\nᐶ Leave",["Open", 5],["Leave", 4]],
+    ["hist", "You turned left and you wind up on a dark little house looking for refugee, inside there is a Chest! It seems weird though..."],
+    ["optn", "Open it or Leave the house and go back for the mushroom?\nᐶ Open\nᐶ Leave",["Open", 7],["Leave", -2]],
     ["hist", "You died... Try Again", -7], 
     ["hist", nome + ": Finally i won my first battle!!"],
     ["hist", "You leveled up!"],
     ["lvup", 0, 2],
-    ["fim"],
+    ["hist", "As you walk and walk and walk through the field, u reach a crossways..."],
+    ["optn", "Go Left or Right?\nᐶ Left\nᐶ Right", ["Left", 4], ["Right", 5]],
     ["hist", "BZZZzzzZZZZZ..... A bunch of bees jump out and start to sting you repeatedly!!\nJust when you start to panic the bees scram and you start feeling a lot better than before\nThey were medicinal bees !! You win 3 Health Points"],
     ["lvup", 3, 0],
-    ["hist", "welcome to 44"],
-    ["fim"]
+    ["hist", "U go back to the same trail as before.", -4],
+    ["hist", "You reached a dead end, but there is a crawl space beneath a few bushes\nDo you choose to crawl, or go back and go right?", 2],
+    ["hist", "As you walk by the flowers there are a few Odonil Roses and you recognize them to be great for you health!", 6],
+    ["optn", "ᐶ Crawl\nᐶ Go Back", ["Crawl", 1], ["Go Back", -2]],
+    ["hist", "As soon as you get up a few apples approach you...\nYou lock eyes and assume a fighting stance, but they appear friendly, (Although also very weak).\nDo you want to fight them all, or try to talk?"],
+    ["optn", "ᐶ Fight\nᐶ Talk", ["Fight", 1], ["Talk", 2]],
+    ["luta", [player, 4], [AppleGang, 5]],
+    ["hist", "You try to talk to them but they immediately switch expressions and try to jump you!\nYou have no choice but to fight!", -1],
+    ["item", "You picked up Odonil Roses!\n(Check your backpack whenever you are making a decision by answering b)", OdonilRoses],
+    ["hist", "You have found yourself in a good path but keep hearing a few weird sounds...\nAfter a while the noise suddenly stops and you become suspicious...\nA DragonFruit appears!!", 3],
+    ["hist", "After walking for an hour, you have finally reached the Castle's Gate!!", 6],
+    ["hist", "You died... Try Again", -25],
+    ["optn", "ᐶ Fight\nᐶ Run Away", ["Fight", 1], ["Run Away", 2]],
+    ["luta", [player, 3], [DragonFruit, 2]],
+    ["hist", "You managed to run away...."],
+    # finalizar pedaço de historia
+    ["hist", "You died... Try Again", -27],
+    ["lvup", 2, 3], 
+    # implementar função que faça existir o Hp e a Strength no momento | E tambem max hp e max strength (also tem de aparecer no inventario)
+    ["hist", "You had a good rest and got back to the trail.", -5],
+    ["fim"],
 ]
+
 
 l_actual = 0
 p_actual = historia[l_actual]
@@ -176,6 +234,11 @@ while p_actual[0] != "fim" :
             l_actual = l_actual + p_actual[2][1]
         elif (answer == p_actual[3][0]):
             l_actual = l_actual + p_actual[3][1]
+        elif answer == "b":
+            printBackpack()
+        elif answer == "Use Item":
+            # fix use_item
+            print_stats(player)
         else:
             typewriter("Invalid answer. Try again")
     elif(p_actual[0]) == "luta":
@@ -196,6 +259,9 @@ while p_actual[0] != "fim" :
         player["Strength"] = player["Strength"] + p_actual[2]
         print_stats(player)
         l_actual = l_actual + 1  
+    elif(p_actual[0] == "item"):
+        typewriter(p_actual[1])
+        addtoBackpack(p_actual[2])
+        l_actual = l_actual + 1
 
     p_actual = historia[l_actual]
-
