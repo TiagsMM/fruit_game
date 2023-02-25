@@ -3,15 +3,18 @@ import time, random, sys, os
 starting_stats = {
     "Grape": {
         "Hp": 5,
-        "Strength": 5
+        "Strength": 5,
+        "MaxHp": 5,
     },
     "Cherry": {
         "Hp": 6,
-        "Strength": 4
+        "Strength": 4,
+        "MaxHp": 6,
     },
     "Blueberry": {
         "Hp": 4,
-        "Strength": 6
+        "Strength": 6,
+        "MaxHp": 4,
     }
 }
 
@@ -19,7 +22,8 @@ starting_stats = {
 player = {
     "Nome": "",
     "Hp": 0,
-    "Strength": 0
+    "Strength": 0,
+    "MaxHp": 0,
 }
 
 mushroom = {
@@ -59,15 +63,18 @@ def addtoBackpack(item):
     backpack[item["Nome"]] = item
 
 def printBackpack():
-    for b in backpack:
-        print("ᐶ" + b)
-    print_stats(player)
-    if backpack == [0]:
+    if len(backpack) == 0:
         typewriter("Your Backpack is empty...Go get some items")
+    for b in backpack:
+        print("ᐶ " + b)
+    print_stats(player)
 
 def useItem(item): 
     player["Hp"] = player["Hp"] + item["Hp"]
     player["Strength"] = player["Strength"] + item["Strength"]
+    if player["Hp"] > player["MaxHp"]:
+        player["Hp"] = player["MaxHp"]
+    del backpack[item["Nome"]]
 
 def typewriter(string):
     for char in string:
@@ -83,7 +90,10 @@ def typewriter(string):
 os.system("clear") 
 
 def print_stats(Jogador):
-    typewriter(Jogador["Nome"] + " stats:" + "\nᐶ Hp ❤ :" +  str(Jogador["Hp"])  +  "\nᐶ Strength 🗡 :" + str(Jogador["Strength"]) + "\n" )
+    if  len(Jogador) == 4:
+        typewriter(Jogador["Nome"] + " stats:" + "\nᐶ Hp ❤ :" +  str(Jogador["Hp"])  +  "\nᐶ Strength 🗡 :" + str(Jogador["Strength"]) + "\nᐶ Max Hp ❤ :" + str(Jogador["MaxHp"]))
+    else:
+        typewriter(Jogador["Nome"] + " stats:" + "\nᐶ Hp ❤ :" +  str(Jogador["Hp"])  +  "\nᐶ Strength 🗡 :" + str(Jogador["Strength"]))
     return None
 
 def fight(statsA, statsB):
@@ -130,6 +140,7 @@ character=input()
 if character == "Grape" or character == "Cherry" or  character == "Blueberry":
     player["Hp"]=starting_stats[character]["Hp"]
     player["Strength"]=starting_stats[character]["Strength"]
+    player["MaxHp"]=starting_stats[character]["MaxHp"]
 else:
     print("Invalid Character")
     exit()
@@ -177,7 +188,7 @@ historia= [
     ["hist", "G. Apple: But first, you should rest some more..."],
     ["hist", "A couple days later..."],
     ["hist", "After staying a couple weeks on the hospital and practicing in the gym with G. Apple your stats have raised up!"],
-    ["lvup", (starting_stats[character]["Hp"] * 2) - player["Hp"], (starting_stats[character]["Strength"] * 2) - player["Strength"]],
+    ["lvup", (starting_stats[character]["MaxHp"] * 2) - player["Hp"], (starting_stats[character]["Strength"] * 2) - player["Strength"]],
     ["hist", "You and G.Apple leave the hospital and end up on a crop, where u must find the GREAT EVIL PINEAPPLE and bring him down!! "],
     ["hist", "G.Apple: This is where i will leave you... You must get vengeance for all of us!"],
     ["hist", "When you enter the crop you pass through various plants and beautiful species..."],
@@ -207,13 +218,15 @@ historia= [
     ["hist", "After walking for an hour, you have finally reached the Castle's Gate!!", 6],
     ["hist", "You died... Try Again", -25],
     ["optn", "ᐶ Fight\nᐶ Run Away", ["Fight", 1], ["Run Away", 2]],
-    ["luta", [player, 3], [DragonFruit, 2]],
-    ["hist", "You managed to run away...."],
-    # finalizar pedaço de historia
+    ["luta", [player, -3], [DragonFruit, 2]],
+    ["hist", "You managed to run away....\nAnd found yourself back at the trail!", -4],
     ["hist", "You died... Try Again", -27],
     ["lvup", 2, 3], 
-    # implementar função que faça existir o Hp e a Strength no momento | E tambem max hp e max strength (also tem de aparecer no inventario)
-    ["hist", "You had a good rest and got back to the trail.", -5],
+    ["hist", "You try opening these H U G E gates..."],
+    ["hist", "crrrr!\nThe gates make a frightening noise...", 2],
+    ["hist", "You had a good rest and got back to the trail.", -9],
+    ["hist", "As soon as you enter there are 2 plaques to your right\nOne says .Dungeon. (to the left) and the other says .Bed Chambers. (up the stairs)"],
+    ["optn", "Where do you go?\nᐶ Dungeon\nᐶ Bed Chambers", ["Dungeon", 1], ["Bed Chambers", 2]],
     ["fim"],
 ]
 
@@ -257,6 +270,7 @@ while p_actual[0] != "fim" :
     elif(p_actual[0] == "lvup" ):
         player["Hp"]= player["Hp"] + p_actual[1]
         player["Strength"] = player["Strength"] + p_actual[2]
+        player["MaxHp"]= player["MaxHp"] + p_actual[1]
         print_stats(player)
         l_actual = l_actual + 1  
     elif(p_actual[0] == "item"):
