@@ -223,11 +223,15 @@ historia= [
     ["hist", "You died... Try Again", -27],
     ["lvup", 2, 3], 
     ["hist", "You try opening these H U G E gates..."],
+    ["ckpt"],
     ["hist", "crrrr!\nThe gates make a frightening noise...", 2],
-    ["hist", "You had a good rest and got back to the trail.", -9],
-    ["hist", "As soon as you enter there are 2 plaques to your right\nOne says .Dungeon. (to the left) and the other says .Bed Chambers. (up the stairs)"],
-    ["optn", "Where do you go?\nᐶ Dungeon\nᐶ Bed Chambers", ["Dungeon", 1], ["Bed Chambers", 2]],
-    ["fim"],
+    ["hist", "You had a good rest and got back to the trail.", -9]
+    ["hist", "As soon as you open the gate there is a watermelon on the floor, you pick it up and you win the game!\nCongratulations!!!"]
+    # ["hist", "As soon as you enter there are 2 plaques to your right\nOne says .Dungeon. (to the left) and the other says .Bed Chambers. (up the stairs)"],
+    # ["optn", "Where do you go?\nᐶ Dungeon\nᐶ Bed Chambers", ["Dungeon", 1], ["Bed Chambers", 2]],
+    # ["hist", "You enter the dungeon"],
+    ["hist", "The End."],
+    ["fim"]
 ]
 
 l_actual = 0
@@ -264,6 +268,10 @@ while p_actual[0] != "fim" :
             l_actual = l_actual + p_actual[2][1]
         if player["Hp"] <= 0:
             player["Hp"]= starting_stats[character]["Hp"]
+    elif(p_actual[0]) == "ckpt":
+        player["Hp"] = player["MaxHp"]
+        print_stats(player)
+        l_actual = l_actual + 1
     elif(p_actual[0] == "t" ):
         time.sleep(p_actual[1]) 
         l_actual = l_actual + 1  
